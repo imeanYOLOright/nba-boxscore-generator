@@ -33,6 +33,7 @@ lockfile==0.8
 ordereddict==1.1
 paramiko==1.7.5
 ply==3.4
+pyasn1==0.1.7
 pycrypto==2.6.1
 pycurl==7.19.0
 pygpgme==0.1
