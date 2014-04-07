@@ -1,8 +1,8 @@
 import os
 import html5lib
-from flask import Flask
+from flask import Flask, render_template
 from bs4 import BeautifulSoup as bsoup
-from datetime import datetime, time
+import datetime
 from collections import namedtuple
 import requests
 from pytz import timezone
@@ -206,15 +206,19 @@ def get_performances(box):
 def get_points_by_quarter(doc):
 	quarter_points = {"home": [], "away": []}
 	trs = doc.find(id="nbaGIQtrScrs").find_all("tr")
-	quarter_points["home"] = [tr.string for tr in trs[0].find_all("td")]
-	quarter_points["away"] = [tr.string for tr in trs[2].find_all("td")]
+	quarter_points["home"] = [int(tr.string) for tr in trs[0].find_all("td")]
+	quarter_points["away"] = [int(tr.string) for tr in trs[2].find_all("td")]
+	quarter_points["home"].append(sum(quarter_points["home"]))
+	quarter_points["away"].append(sum(quarter_points["away"]))
+
 	return quarter_points
 
 
-def generate_post_game(home, away, by_quarter):
-	home_box = home.pop()
-	away_box = away.pop()
-	return "This is where the template rendering will happen"
+def generate_post_game(home, away, home_perfs, away_perfs, by_quarter):
+	home_box = home_perfs.pop()
+	away_box = away_perfs.pop()
+	return render_template("postgame.txt", away=away, home=home,
+									away_box=away_box, home_box=home_box, by_quarter=by_quarter)
 
 
 def post_game(home, away, date):
@@ -228,17 +232,18 @@ def post_game(home, away, date):
 	home_perfs = get_performances(stats[1])
 	by_quarter = get_points_by_quarter(doc)
 
-	return generate_post_game(home_perfs, away_perfs, by_quarter)
+	return generate_post_game(home, away, home_perfs, away_perfs, by_quarter)
 
 
 @app.route("/")
-def home(environ, response):
-	response("200 OK", [('Content-type', 'text/html')])
-	#home = get_team("IND")
-	#away = get_team("ATL")
-	#pg = post_game(home, away, datetime.now(timezone("US/Pacific")))
-	return "hello world" #pg
+def home():
+	home = get_team("IND")
+	away = get_team("ATL")
+	pg = post_game(home, away, datetime.date(2014, 4, 6))#datetime.now(timezone("US/Pacific")))
+	return pg
 
+def execute(environ, response):
+	app.run(debug=True)
 
 if __name__ == "__main__":
 	app.run(debug=True)
