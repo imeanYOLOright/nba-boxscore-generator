@@ -235,15 +235,17 @@ def post_game(home, away, date):
 	return generate_post_game(home, away, home_perfs, away_perfs, by_quarter)
 
 
-@app.route("/")
-def home():
+@app.route("/generate")
+def generate():
 	home = get_team("IND")
 	away = get_team("ATL")
 	pg = post_game(home, away, datetime.date(2014, 4, 6))#datetime.now(timezone("US/Pacific")))
 	return pg
 
-def execute(environ, response):
-	app.run(debug=True)
+@app.route("/")
+def home():
+	return render_template("index.html")
+
 
 if __name__ == "__main__":
 	app.run(debug=True)
