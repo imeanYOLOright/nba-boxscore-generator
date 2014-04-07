@@ -12,5 +12,8 @@
 		});
 	</script>
 	<textarea id="comment" rows="15"></textarea>
+	{% for g in games %}
+	<div>{{ g.home.name }} | {{ g.away.name }}</div>
+	{% endfor %}
 </body>
 </html>

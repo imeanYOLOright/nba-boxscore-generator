@@ -1,6 +1,6 @@
 import os
 import html5lib
-from flask import Flask, render_template
+from flask import Flask, request, render_template
 from bs4 import BeautifulSoup as bsoup
 import datetime
 from collections import namedtuple
@@ -9,9 +9,13 @@ from pytz import timezone
 
 app = Flask(__name__)
 
-NBA_URL = (
+GAME_URL = (
 	"http://www.nba.com/games/{year}{month}{day}/"
 	"{away.shortcode}{home.shortcode}/gameinfo.html"
+)
+
+GAMELINE_URL = (
+	"http://www.nba.com/gameline/{year}{month}{day}/"
 )
 
 Division = namedtuple("Division", ["name", "teams"])
@@ -165,7 +169,7 @@ def get_team(shortcode):
 
 
 def get_game_html(home, away, date):
-	doc = requests.get(NBA_URL.format(
+	doc = requests.get(GAME_URL.format(
 		year=date.year,
 		month=str(date.month).zfill(2),
 		day=str(date.day).zfill(2),
@@ -240,15 +244,41 @@ def post_game(home, away, date):
 
 @app.route("/generate")
 def generate():
-	home = get_team("IND")
-	away = get_team("ATL")
-	pg = post_game(home, away, datetime.date(2014, 4, 6))#datetime.now(timezone("US/Pacific")))
-	return pg
+	args = request.args
+
+	year = int(args.get("year"))
+	month = int(args.get("month"))
+	day = int(args.get("day"))
+	home = get_team(args.get("home"))
+	away = get_team(args.get("away"))
+
+	return post_game(home, away, datetime.date(year, month, day))
+
+
+def get_game(div):
+	teams = div.find_all("div", class_="nbaModTopTeamName")
+	return {"home": get_team(teams[1].string.upper()),
+				"away": get_team(teams[0].string.upper())}
+
+
+def get_todays_games(date):
+	games = []
+	doc = bsoup(requests.get(GAMELINE_URL.format(
+		year=date.year,
+		month=str(date.month).zfill(2),
+		day=str(date.day + 1).zfill(2),
+	)).text)
+
+	divs = doc.find(id="nbaSSOuter").find_all("div", class_="nbaModTopScore")
+
+	return [get_game(g) for g in divs]
 
 
 @app.route("/")
 def home():
-	return render_template("index.html")
+	games = get_todays_games(datetime.datetime.now(timezone("US/Pacific")))
+
+	return render_template("index.html", games=games)
 
 
 if __name__ == "__main__":
