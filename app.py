@@ -256,9 +256,14 @@ def generate():
 
 
 def get_game(div):
-	teams = div.find_all("div", class_="nbaModTopTeamName")
-	return {"home": get_team(teams[1].string.upper()),
-				"away": get_team(teams[0].string.upper())}
+	away = div.find("div", class_="nbaPreMnStatusTeamAw")
+	home = div.find("div", class_="nbaPreMnStatusTeamHm")
+	gametime = div.find("div", class_="nbaPreMnStatus")
+
+
+	return {"home": get_team(away.get_text()),
+				"away": get_team(home.get_text()),
+				"time": gametime.get_text()}
 
 
 def get_todays_games(date):
@@ -269,16 +274,17 @@ def get_todays_games(date):
 		day=str(date.day + 1).zfill(2),
 	)).text)
 
-	divs = doc.find(id="nbaSSOuter").find_all("div", class_="nbaModTopScore")
+	divs = doc.find(id="nbaSSOuter").find_all("div", class_="nbaPreMnScore")
 
 	return [get_game(g) for g in divs]
 
 
 @app.route("/")
 def home():
-	games = get_todays_games(datetime.datetime.now(timezone("US/Pacific")))
+	dt = datetime.datetime.now(timezone("US/Pacific"))
+	games = get_todays_games(dt)
 
-	return render_template("index.html", games=games)
+	return render_template("index.html", date=dt, games=games)
 
 
 if __name__ == "__main__":

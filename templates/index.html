@@ -1,19 +1,27 @@
+<!DOCTYPE html>
 <html>
 <head>
 	<title>NBA Post-Game Recap Generator</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascrupt" src="js/recap.js"></script>
 </head>
 <body>
-	<script type="text/javascript">
-		$(function() {
-			$.get("/generate", function(data) {
-				$("#comment").val(data);
-			});
-		});
-	</script>
-	<textarea id="comment" rows="15"></textarea>
-	{% for g in games %}
-	<div>{{ g.home.name }} | {{ g.away.name }}</div>
-	{% endfor %}
+	<div class="container">
+		<div class="jumbotron">
+			<h1>r/NBA Post-Game Recap Generator</h1>
+			<h2>Games for {{ date.month }}/{{ date.day }}/{{ date.year }}</h2>
+		</div>
+		{% for g in games %}
+		<div class="matchup">
+			<div class="time">{{ g.time }}</div>
+			<div class="home">{{ g.home.name }}</div>
+			<div class="away">{{ g.away.name }}</div>
+			<input type="button" class="btn" value="Generate Post Game" />
+			<textarea cols="15" class="postgame hidden"></textarea>
+		</div>
+		{% endfor %}
+	</div>
 </body>
 </html>
+
