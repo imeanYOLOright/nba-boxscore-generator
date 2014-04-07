@@ -165,13 +165,14 @@ def get_team(shortcode):
 
 
 def get_game_html(home, away, date):
-	return bsoup(requests.get(NBA_URL.format(
+	doc = requests.get(NBA_URL.format(
 		year=date.year,
 		month=str(date.month).zfill(2),
 		day=str(date.day).zfill(2),
 		away=away,
-		home=home
-	)).text)
+		home=home,
+	))
+	return bsoup(doc.text)
 
 
 def get_performance(row):
@@ -209,15 +210,18 @@ def get_points_by_quarter(doc):
 	quarter_points["away"] = [tr.string for tr in trs[2].find_all("td")]
 	return quarter_points
 
-	
+
 def generate_post_game(home, away, by_quarter):
 	home_box = home.pop()
 	away_box = away.pop()
-	return "This is where the template rendering will happen" 
+	return "This is where the template rendering will happen"
 
 
 def post_game(home, away, date):
 	doc = get_game_html(home, away, date)
+
+	if "Not Found" in doc.title.string:
+		return "Bad URL"
 
 	stats = doc.find_all(id="nbaGITeamStats")
 	away_perfs = get_performances(stats[0])
@@ -228,11 +232,11 @@ def post_game(home, away, date):
 
 
 @app.route("/")
-def home():
+def home(environ, response):
 	home = get_team("IND")
 	away = get_team("ATL")
 	pg = post_game(home, away, datetime.now(timezone("US/Pacific")))
-	return "testing"
+	return pg
 
 
 if __name__ == "__main__":
