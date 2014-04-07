@@ -1,1 +1,1 @@
-web: python home:app
+webL gunicorn app:home
