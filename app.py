@@ -233,6 +233,7 @@ def post_game(home, away, date):
 
 @app.route("/")
 def home(environ, response):
+	response("200 OK", [('Content-type', 'text/html')])
 	#home = get_team("IND")
 	#away = get_team("ATL")
 	#pg = post_game(home, away, datetime.now(timezone("US/Pacific")))
