@@ -1,9 +1,16 @@
+BeautifulSoup==3.2.1
 Flask==0.10.1
 Jinja2==2.7.2
 MarkupSafe==0.19
+Twisted==13.2.0
 Werkzeug==0.9.4
+beautifulsoup4==4.3.2
+gunicorn==18.0
 html5lib==0.999
 itsdangerous==0.24
+pytz==2014.2
+requests==2.2.1
 six==1.6.1
 virtualenv==1.11.4
 wsgiref==0.1.2
+zope.interface==4.1.1
