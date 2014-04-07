@@ -1,3 +1,4 @@
+import os
 import html5lib
 from flask import Flask
 from bs4 import BeautifulSoup as bsoup
@@ -231,7 +232,6 @@ def home():
 	home = get_team("IND")
 	away = get_team("ATL")
 	pg = post_game(home, away, datetime.now(timezone("US/Pacific")))
-	print pg
 	return "testing"
 
 
