@@ -1,2 +1,4 @@
 ignore/
 *.sw*
+*.pyc
+venv

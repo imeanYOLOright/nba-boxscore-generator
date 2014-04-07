@@ -1,9 +1,12 @@
 import html5lib
+from flask import Flask
 from bs4 import BeautifulSoup as bsoup
 from datetime import datetime, time
 from collections import namedtuple
 import requests
 from pytz import timezone
+
+app = Flask(__name__)
 
 NBA_URL = (
 	"http://www.nba.com/games/{year}{month}{day}/"
@@ -223,9 +226,14 @@ def post_game(home, away, date):
 	return generate_post_game(home_perfs, away_perfs, by_quarter)
 
 
-if __name__ == "__main__":
+@app.route("/")
+def home():
 	home = get_team("IND")
 	away = get_team("ATL")
 	pg = post_game(home, away, datetime.now(timezone("US/Pacific")))
 	print pg
+	return "testing"
 
+
+if __name__ == "__main__":
+	app.run(debug=True)
