@@ -1,6 +1,7 @@
 ###Game Recap!
 
 **{{ by_quarter.home[4] }}** {{ home.name }} - **{{ by_quarter.away[4] }}** {{ away.name }}   
+
 [](/{{ home.shortcode }}) - [](/{{ away.shortcode }}) | 1 | 2 | 3 | 4 | T
 :-|:-|:-|:-|:-|:-
 {{ home.name }} | {{ by_quarter.home[0] }} | {{ by_quarter.home[1] }} | {{ by_quarter.home[2] }} | {{ by_quarter.home[3] }} | {{ by_quarter.home[4] }}
@@ -11,4 +12,14 @@ Box Score|PTS|FG|3P|FT|REB|AST|TO|PF
 {{ home.name }} | {{ home_box.pts }} | {{ home_box.fg }} | {{ home_box.tre }} | {{ home_box.ft }} | {{ home_box.reb }} | {{ home_box.ast }} | {{home_box.to }} | {{ home_box.pf }}
 {{ away.name }} | {{ away_box.pts }} | {{ away_box.fg }} | {{ away_box.tre }} | {{ away_box.ft }} | {{ away_box.reb }} | {{ away_box.ast }} | {{away_box.to }} | {{ away_box.pf }}
 ***
-
+[](/{{ home.shortcode }}) {{ home.shortcode }}|MP|PTS|FG|3P|FT|REB|AST|STL|BLK|TO|PF|+/-
+:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|:-
+{% for p in home_perfs if not p.dnp %}{{ p.name }}|{{ p.mins }}|{{ p.pts }}|{{ p.fg }}|{{ p.tre }}|{{ p.ft }}|{{ p.reb }}|{{ p.ast }}|{{ p.stl }}|{{ p.blk }}|{{ p.to }}|{{ p.pf }}|{{ p.pm }}
+{% endfor %}{% for p in home_perfs if p.dnp %}{{ p.name }}|{{ p.dnp }}
+{% endfor %}
+***
+[](/{{ away.shortcode }}) {{ away.shortcode }}|MP|PTS|FG|3P|FT|REB|AST|STL|BLK|TO|PF|+/-
+:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|:-|:-
+{% for p in away_perfs if not p.dnp %}{{ p.name }}|{{ p.mins }}|{{ p.pts }}|{{ p.fg }}|{{ p.tre }}|{{ p.ft }}|{{ p.reb }}|{{ p.ast }}|{{ p.stl }}|{{ p.blk }}|{{ p.to }}|{{ p.pf }}|{{ p.pm }}
+{% endfor %}{% for p in away_perfs if p.dnp %}{{ p.name }}|{{ p.dnp }}
+{% endfor %}

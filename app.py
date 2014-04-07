@@ -16,9 +16,9 @@ NBA_URL = (
 
 Division = namedtuple("Division", ["name", "teams"])
 Team = namedtuple("Team", ["name", "shortcode", "subreddit", "espn_url"])
-Performance = namedtuple("Performance", ["player", "min", "fg", "tre", "ft",
-	"pm", "reb", "ast", "pf", "st", "to", "blk", "pts"])
-DNPPerformance  = namedtuple("DNPPerformance", ["player", "dnp"])
+Performance = namedtuple("Performance", ["name", "mins", "fg", "tre", "ft",
+	"pm", "reb", "ast", "pf", "stl", "to", "blk", "pts"])
+DNPPerformance  = namedtuple("DNPPerformance", ["name", "dnp"])
 
 DIVISIONS = [
     Division("Atlantic", [
@@ -179,7 +179,7 @@ def get_performance(row):
 	tds = row.find_all("td")
 
 	if len(tds) < 17:
-		return DNPPerformance(tds[0].string, tds[1].string)
+		return DNPPerformance(tds[0].string, tds[1].string.split("-")[0])
 
 	name = tds[0].string
 	mins = tds[2].string
@@ -190,25 +190,25 @@ def get_performance(row):
 	reb = tds[9].string
 	ast = tds[10].string
 	pf = tds[11].string
-	st = tds[12].string
+	stl = tds[12].string
 	to = tds[13].string
 	blk = tds[14].string
-	pts = tds[15].string
+	pts = tds[16].string
 
 	return Performance(name, mins, fg, tre, ft, pm, reb, ast,
-				pf, st, to, blk, pts)
+				pf, stl, to, blk, pts)
 
 def get_performances(box):
 	trs = box.find_all("tr")
-	return [get_performance(tr) for i, tr in enumerate(trs) if i > 1 and i < len(trs) - 1]
+	return [get_performance(tr) for i, tr in enumerate(trs) if i > 2 and i < len(trs) - 1]
 
 
 def get_points_by_quarter(doc):
 	quarter_points = {"home": [], "away": []}
 	trs = doc.find(id="nbaGIQtrScrs").find_all("tr")
-	quarter_points["home"] = [int(tr.string) for tr in trs[0].find_all("td")]
-	quarter_points["away"] = [int(tr.string) for tr in trs[2].find_all("td")]
+	quarter_points["home"] = [int(tr.string) for tr in trs[2].find_all("td")]
 	quarter_points["home"].append(sum(quarter_points["home"]))
+	quarter_points["away"] = [int(tr.string) for tr in trs[0].find_all("td")]
 	quarter_points["away"].append(sum(quarter_points["away"]))
 
 	return quarter_points
@@ -217,8 +217,11 @@ def get_points_by_quarter(doc):
 def generate_post_game(home, away, home_perfs, away_perfs, by_quarter):
 	home_box = home_perfs.pop()
 	away_box = away_perfs.pop()
-	return render_template("postgame.txt", away=away, home=home,
-									away_box=away_box, home_box=home_box, by_quarter=by_quarter)
+	return render_template("postgame.txt",
+									away=away, home=home,
+									away_perfs=away_perfs, home_perfs=home_perfs,
+									away_box=away_box, home_box=home_box,
+									by_quarter=by_quarter)
 
 
 def post_game(home, away, date):
@@ -241,6 +244,7 @@ def generate():
 	away = get_team("ATL")
 	pg = post_game(home, away, datetime.date(2014, 4, 6))#datetime.now(timezone("US/Pacific")))
 	return pg
+
 
 @app.route("/")
 def home():
