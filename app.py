@@ -271,7 +271,7 @@ def get_todays_games(date):
 	doc = bsoup(requests.get(GAMELINE_URL.format(
 		year=date.year,
 		month=str(date.month).zfill(2),
-		day=str(date.day + 1).zfill(2),
+		day=str(date.day).zfill(2),
 	)).text)
 
 	divs = doc.find(id="nbaSSOuter").find_all("div", class_="nbaPreMnScore")
