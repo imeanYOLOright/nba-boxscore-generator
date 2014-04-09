@@ -2,7 +2,7 @@ import os
 import html5lib
 from flask import Flask, request, render_template
 from bs4 import BeautifulSoup as bsoup
-import datetime
+from datetime import datetime, timedelta
 from collections import namedtuple
 import requests
 from pytz import timezone
@@ -276,7 +276,7 @@ def generate():
 	home = get_team(args.get("home"))
 	away = get_team(args.get("away"))
 
-	return post_game(home, away, datetime.date(year, month, day))
+	return post_game(home, away, date(year, month, day))
 
 def get_game(div):
 	away = div.find("div", class_="nbaPreMnStatusTeamAw")
@@ -311,7 +311,7 @@ def get_todays_games(date):
 
 @app.route("/")
 def home():
-	dt = datetime.datetime.now(timezone("US/Pacific"))
+	dt = datetime.now(timezone("US/Pacific")) + timedelta(hours=-5)
 	games = get_todays_games(dt)
 
 	return render_template("index.html", date=dt, games=games)
