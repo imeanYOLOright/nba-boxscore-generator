@@ -1,4 +1,4 @@
-###Game Recap
+###Game Stats 
 
 **{{ time }}** : **{{ by_quarter.home[4] }}** {{ home.name }} - **{{ by_quarter.away[4] }}** {{ away.name }}   
 
