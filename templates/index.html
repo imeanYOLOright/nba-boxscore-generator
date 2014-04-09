@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>NBA Post-Game Recap Generator</title>
+	<title>NBA Box Score Generator</title>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+	<style type="text/css">
+		.matchup-wrapper {height:200px;}
+	</style>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script type="text/javascript">
 		$(function() {
@@ -24,7 +27,7 @@
 											  "day": day
 											 }, function(data) {
 						postgame.val(data).removeClass("hidden");
-					}); 
+					});
 				});
 			});
 		});
@@ -33,18 +36,25 @@
 <body>
 	<div class="container">
 		<div class="jumbotron">
-			<h1>r/NBA Post-Game Recap Generator</h1>
+			<h1>r/NBA Box Score Generator</h1>
 			<h2>Games for {{ date.month }}/{{ date.day }}/{{ date.year }}</h2>
 		</div>
+		<div class="row">
 		{% for g in games %}
-		<div class="matchup">
-			<div class="time">{{ g.time }}</div>
-			<div class="home" shortcode="{{ g.home.shortcode }}">{{ g.home.name }}</div>
-			<div class="away" shortcode="{{ g.away.shortcode }}">{{ g.away.name }}</div>
-			<input type="button" class="btn" value="Generate Post Game" />
-			<textarea cols="15" class="postgame hidden"></textarea>
+		<div class="matchup-wrapper col-md-12">
+			<div class="matchup col-md-6">
+				<div class="time col-md-12"><h4>{{ g.time }}</h4></div>
+				<div class="home col-md-12" shortcode="{{ g.home.shortcode }}"><h4>{{ g.home.name }} : {{ g.scores[0] }}</h4></div>
+				<div class="away col-md-12" shortcode="{{ g.away.shortcode }}"><h4>{{ g.away.name }} : {{ g.scores[1] }}</h4></div>
+				<br />
+				<input type="button" class="btn" value="Generate Box Score" />
+			</div>
+			<div class="col-md-6">
+				<textarea rows="5" class="postgame form-control"></textarea>
+			</div>
 		</div>
 		{% endfor %}
+		</div>
 	</div>
 </body>
 </html>
