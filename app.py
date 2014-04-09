@@ -233,17 +233,18 @@ def game_status(doc):
 
 	if time is None:
 		time = doc.find("p", class_="nbaGITime")
-		time = time.get_text().split("-")[0].strip()
+		if time is not None:
+			time = time.get_text().split("-")[0].strip()
 	else:
+		if time.find("p", class_="nbaGIPreTime") is not None:
+			return "Not Started"
+
 		old = time
 		time = old.h2.get_text()
 		if time != "HALF" and time != "FINAL":
 			time += " " + old.p.get_text()
 
-	if "Q" in time or time == "HALF" or time == "FINAL":
-		return time
-
-	return "Not Started"
+	return time
 
 
 def post_game(home, away, date):
