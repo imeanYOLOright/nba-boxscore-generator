@@ -282,9 +282,7 @@ def get_game(div):
 	away = div.find("div", class_="nbaPreMnStatusTeamAw")
 	home = div.find("div", class_="nbaPreMnStatusTeamHm")
 	gametime = div.find("div", class_="nbaLiveStatTxSm")
-	scores = [g.get_text() for g in div.find_all("div", class_="nbaModTopTeamNum")]
-
-	print scores
+	scores = [" : " + g.get_text() for g in div.find_all("div", class_="nbaModTopTeamNum")]
 
 	if away is None:
 		away = div.find("div", class_="nbaModTopTeamAw")

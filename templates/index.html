@@ -44,8 +44,8 @@
 		<div class="matchup-wrapper col-md-12">
 			<div class="matchup col-md-6">
 				<div class="time col-md-12"><h4>{{ g.time }}</h4></div>
-				<div class="home col-md-12" shortcode="{{ g.home.shortcode }}"><h4>{{ g.home.name }} : {{ g.scores[0] }}</h4></div>
-				<div class="away col-md-12" shortcode="{{ g.away.shortcode }}"><h4>{{ g.away.name }} : {{ g.scores[1] }}</h4></div>
+				<div class="home col-md-12" shortcode="{{ g.home.shortcode }}"><h4>{{ g.home.name }} {{ g.scores[0] }}</h4></div>
+				<div class="away col-md-12" shortcode="{{ g.away.shortcode }}"><h4>{{ g.away.name }} {{ g.scores[1] }}</h4></div>
 				<br />
 				<input type="button" class="btn" value="Generate Box Score" />
 			</div>
