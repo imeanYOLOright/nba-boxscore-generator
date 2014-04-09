@@ -8,9 +8,9 @@
 		$(function() {
 			$(".matchup").each(function(i, el) {
 				$el = $(el);
-				var home = $el.find(".home").text;
-				var away = $el.find(".away").text;
-				var date = $(".jumbotron").find("h2").text.split("/");
+				var home = $el.find(".home").text();
+				var away = $el.find(".away").text();
+				var date = $(".jumbotron").find("h2").text().split("/");
 				var year = date[2];
 				var month = date[1];
 				var day = date[0].slice(9);
