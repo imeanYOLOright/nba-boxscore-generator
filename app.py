@@ -288,8 +288,8 @@ def get_game(div):
 	if home is None:
 		home = div.find("div", class_="nbaModTopTeamHm")
 	if gametime is None:
-		gametime = div.find("h2", class_="nbaFnlStatTx")
-	if gametime is None or gametime.get_text() == "":
+		gametime = div.find(class_="nbaFnlStatTx")
+	if gametime.get_text() == "":
 		gametime = div.find("div", class_="nbaFnlStatTxSm")
 
 	return {"home": get_team(home.get_text().upper()[:3]),
