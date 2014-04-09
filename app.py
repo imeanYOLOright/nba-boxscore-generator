@@ -289,8 +289,8 @@ def get_game(div):
 		home = div.find("div", class_="nbaModTopTeamHm")
 		gametime = div.find("div", class_="nbaLiveStatTxSm")
 
-	return {"home": get_team(away.get_text().upper()[:3]),
-					"away": get_team(home.get_text().upper()[:3]),
+	return {"home": get_team(home.get_text().upper()[:3]),
+					"away": get_team(away.get_text().upper()[:3]),
 					"time": gametime.get_text()}
 
 
