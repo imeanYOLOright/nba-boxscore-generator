@@ -21,7 +21,7 @@
 		
 				$el.find(".btn").click(function() {
 					var payload = {"home": home, "away": away, "year": year,
-										"month": month, "day", day};
+										"month": month, "day": day};
 					postgame.html("Loading box score...");
 					$.get("/generate", payload, function(data) {
 						postgame.html('<textarea rows="5" class="form-control">'
