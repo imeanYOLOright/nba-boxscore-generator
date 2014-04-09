@@ -281,13 +281,17 @@ def generate():
 def get_game(div):
 	away = div.find("div", class_="nbaPreMnStatusTeamAw")
 	home = div.find("div", class_="nbaPreMnStatusTeamHm")
-	gametime = div.find("div", class_="nbaLiveStatTxSm").get_text()
+	gametime = div.find("div", class_="nbaLiveStatTxSm")
+
+	print gametime
 
 	if away is None:
 		away = div.find("div", class_="nbaModTopTeamAw")
 	if home is None:
 		home = div.find("div", class_="nbaModTopTeamHm")
-	if gametime == "":
+	if gametime is None:
+		gametime = div.find("h2", class_="nbaFnlStatTx").get_text()
+	elif gametime.get_text() == "":
 		gametime = div.find("div", class_="nbaFnlStatTxSm").get_text()
 
 	return {"home": get_team(home.get_text().upper()[:3]),
