@@ -20,6 +20,7 @@
 				var postgame = $el.find(".postgame");
 		
 				$el.find(".btn").click(function() {
+					console.log(postgame);
 					$.get("/generate", {"home": home,
 											  "away": away, 
 											  "year": year,
