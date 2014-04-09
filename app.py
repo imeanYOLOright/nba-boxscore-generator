@@ -238,7 +238,6 @@ def game_status(doc):
 		old = time
 		time = old.h2.get_text()
 		if time != "HALF" and time != "FINAL":
-			print time
 			time += " " + old.p.get_text()
 
 	if "Q" in time or time == "HALF" or time == "FINAL":
@@ -282,7 +281,7 @@ def get_game(div):
 	away = div.find("div", class_="nbaPreMnStatusTeamAw")
 	home = div.find("div", class_="nbaPreMnStatusTeamHm")
 	gametime = div.find("div", class_="nbaLiveStatTxSm")
-	scores = [" : " + g.get_text() for g in div.find_all("div", class_="nbaModTopTeamNum")]
+	scores = [": " + g.get_text() for g in div.find_all("div", class_="nbaModTopTeamNum") if g.get_text() != ""]
 
 	if away is None:
 		away = div.find("div", class_="nbaModTopTeamAw")
@@ -290,7 +289,7 @@ def get_game(div):
 		home = div.find("div", class_="nbaModTopTeamHm")
 	if gametime is None:
 		gametime = div.find(class_="nbaFnlStatTx")
-	if gametime.get_text() == "":
+	if gametime is None:
 		gametime = div.find("div", class_="nbaFnlStatTxSm")
 
 	return {"home": get_team(home.get_text().upper()[:3]),
