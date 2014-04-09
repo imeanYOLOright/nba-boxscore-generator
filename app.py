@@ -235,9 +235,11 @@ def game_status(doc):
 		time = doc.find("p", class_="nbaGITime")
 		time = time.get_text().split("-")[0].strip()
 	else:
-		time = time.h2.get_text()
+		old = time
+		time = old.h2.get_text()
 		if time != "HALF":
-			time += " " + time.p.get_text()
+			print time
+			time += " " + old.p.get_text()
 
 	if "Q" in time or time == "HALF":
 		return time

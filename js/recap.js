@@ -16,7 +16,7 @@ $(function() {
 									  "month": month,
 									  "day": day
 									 }, function(data) {
-				postgame.val(data);
+				postgame.val(data).removeClass("hidden");
 			}); 
 		}
 	});
