@@ -20,15 +20,14 @@
 				var postgame = $el.find(".postgame");
 		
 				$el.find(".btn").click(function() {
-					console.log(postgame);
+					postgame.html("");
 					$.get("/generate", {"home": home,
 											  "away": away, 
 											  "year": year,
 											  "month": month,
 											  "day": day
 											 }, function(data) {
-						console.log(data);
-						postgame.val(data).removeClass("hidden");
+						postgame.html('<textarea rows="5" class="postgame form-control">' + data + '</textarea>');
 					});
 				});
 			});
@@ -51,8 +50,7 @@
 				<br />
 				<input type="button" class="btn" value="Generate Box Score" />
 			</div>
-			<div class="col-md-6">
-				<textarea rows="5" class="postgame form-control"></textarea>
+			<div class="col-md-6 postgame">
 			</div>
 		</div>
 		{% endfor %}
