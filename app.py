@@ -313,7 +313,7 @@ def get_todays_games(date):
 
 @app.route("/")
 def home():
-	dt = datetime.now(timezone("US/Pacific")) + timedelta(hours=-5)
+	dt = datetime.now(timezone("US/Pacific"))
 	games = get_todays_games(dt)
 
 	return render_template("index.html", date=dt, games=games)
