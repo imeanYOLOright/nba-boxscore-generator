@@ -1,6 +1,6 @@
 ###Game Recap
 
-**{{ by_quarter.home[4] }}** {{ home.name }} - **{{ by_quarter.away[4] }}** {{ away.name }}   
+**{{ time }}** : **{{ by_quarter.home[4] }}** {{ home.name }} - **{{ by_quarter.away[4] }}** {{ away.name }}   
 
 [](/{{ home.shortcode }}) - [](/{{ away.shortcode }}) | 1 | 2 | 3 | 4 | T
 :-|:-|:-|:-|:-|:-

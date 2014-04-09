@@ -218,14 +218,31 @@ def get_points_by_quarter(doc):
 	return quarter_points
 
 
-def generate_post_game(home, away, home_perfs, away_perfs, by_quarter):
+def generate_post_game(time, home, away, home_perfs, away_perfs, by_quarter):
 	home_box = home_perfs.pop()
 	away_box = away_perfs.pop()
 	return render_template("postgame.txt",
-									away=away, home=home,
+									time=time, away=away, home=home,
 									away_perfs=away_perfs, home_perfs=home_perfs,
 									away_box=away_box, home_box=home_box,
 									by_quarter=by_quarter)
+
+
+def game_status(doc):
+	time = doc.find("div", id="nbaGITmeQtr")
+
+	if time is None:
+		time = doc.find("p", class_="nbaGITime")
+		time = time.get_text().split("-")[0].strip()
+	else:
+		time = time.h2.get_text()
+		if time != "HALF":
+			time += " " + time.p.get_text()
+
+	if "Q" in time or time == "HALF":
+		return time
+
+	return "Final" if "Final" in time else "Not Started"
 
 
 def post_game(home, away, date):
@@ -234,12 +251,17 @@ def post_game(home, away, date):
 	if "Not Found" in doc.title.string:
 		return "Bad URL"
 
+	status = game_status(doc)
+
+	if status == "Not Started":
+		return status
+
 	stats = doc.find_all(id="nbaGITeamStats")
 	away_perfs = get_performances(stats[0])
 	home_perfs = get_performances(stats[1])
 	by_quarter = get_points_by_quarter(doc)
 
-	return generate_post_game(home, away, home_perfs, away_perfs, by_quarter)
+	return generate_post_game(status, home, away, home_perfs, away_perfs, by_quarter)
 
 
 @app.route("/generate")
@@ -254,16 +276,20 @@ def generate():
 
 	return post_game(home, away, datetime.date(year, month, day))
 
-
 def get_game(div):
 	away = div.find("div", class_="nbaPreMnStatusTeamAw")
 	home = div.find("div", class_="nbaPreMnStatusTeamHm")
 	gametime = div.find("div", class_="nbaPreMnStatus")
 
 
-	return {"home": get_team(away.get_text()),
-				"away": get_team(home.get_text()),
-				"time": gametime.get_text()}
+	if away is None:
+		away = div.find("div", class_="nbaModTopTeamAw")
+		home = div.find("div", class_="nbaModTopTeamHm")
+		gametime = div.find("div", class_="nbaLiveStatTxSm")
+
+	return {"home": get_team(away.get_text().upper()[:3]),
+					"away": get_team(home.get_text().upper()[:3]),
+					"time": gametime.get_text()}
 
 
 def get_todays_games(date):
@@ -274,10 +300,9 @@ def get_todays_games(date):
 		day=str(date.day).zfill(2),
 	)).text)
 
-	divs = doc.find(id="nbaSSOuter").find_all("div", class_="nbaPreMnScore")
+	divs = doc.find(id="nbaSSOuter").find_all("div", class_="nbaModTopScore")
 
 	return [get_game(g) for g in divs]
-
 
 @app.route("/")
 def home():
