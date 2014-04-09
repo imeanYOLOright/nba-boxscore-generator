@@ -237,14 +237,14 @@ def game_status(doc):
 	else:
 		old = time
 		time = old.h2.get_text()
-		if time != "HALF":
+		if time != "HALF" and time != "FINAL":
 			print time
 			time += " " + old.p.get_text()
 
-	if "Q" in time or time == "HALF":
+	if "Q" in time or time == "HALF" or time == "FINAL":
 		return time
 
-	return "Final" if "Final" in time else "Not Started"
+	return "Not Started"
 
 
 def post_game(home, away, date):
