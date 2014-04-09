@@ -9,7 +9,7 @@
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script type="text/javascript">
 		$(function() {
-			$(".matchup").each(function(i, el) {
+			$(".matchup-wrapper").each(function(i, el) {
 				$el = $(el);
 				var home = $el.find(".home").attr("shortcode");
 				var away = $el.find(".away").attr("shortcode");
@@ -27,8 +27,7 @@
 											  "month": month,
 											  "day": day
 											 }, function(data) {
-						postgame.html(data);
-						console.log(data);//'<textarea rows="5" class="form-control">' + data + '</textarea>');
+						postgame.html('<textarea rows="5" class="form-control">' + data + '</textarea>');
 					});
 				});
 			});
