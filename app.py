@@ -2,7 +2,7 @@ import os
 import html5lib
 from flask import Flask, request, render_template
 from bs4 import BeautifulSoup as bsoup
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from collections import namedtuple
 import requests
 from pytz import timezone
