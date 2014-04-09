@@ -20,14 +20,12 @@
 				var postgame = $el.find(".postgame");
 		
 				$el.find(".btn").click(function() {
-					postgame.html("");
-					$.get("/generate", {"home": home,
-											  "away": away, 
-											  "year": year,
-											  "month": month,
-											  "day": day
-											 }, function(data) {
-						postgame.html('<textarea rows="5" class="form-control">' + data + '</textarea>');
+					var payload = {"home": home, "away": away, "year": year,
+										"month": month, "day", day};
+					postgame.html("Loading box score...");
+					$.get("/generate", payload, function(data) {
+						postgame.html('<textarea rows="5" class="form-control">'
+											 + data + '</textarea>');
 					});
 				});
 			});
