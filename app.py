@@ -185,19 +185,19 @@ def get_performance(row):
 	if len(tds) < 17:
 		return DNPPerformance(tds[0].string, tds[1].string.split("-")[0])
 
-	name = tds[0].string
-	mins = tds[2].string
-	fg = tds[3].string
-	tre = tds[4].string
-	ft = tds[5].string
-	pm = tds[6].string
-	reb = tds[9].string
-	ast = tds[10].string
-	pf = tds[11].string
-	stl = tds[12].string
-	to = tds[13].string
-	blk = tds[14].string
-	pts = tds[16].string
+	name = tds[0].get_text()
+	mins = tds[2].get_text()
+	fg = tds[3].get_text()
+	tre = tds[4].get_text()
+	ft = tds[5].get_text()
+	pm = tds[6].get_text()
+	reb = tds[9].get_text()
+	ast = tds[10].get_text()
+	pf = tds[11].get_text()
+	stl = tds[12].get_text()
+	to = tds[13].get_text()
+	blk = tds[14].get_text()
+	pts = tds[16].get_text()
 
 	return Performance(name, mins, fg, tre, ft, pm, reb, ast,
 				pf, stl, to, blk, pts)
