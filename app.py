@@ -185,7 +185,7 @@ def get_performance(row):
 	if len(tds) < 17:
 		return DNPPerformance(tds[0].string, tds[1].string.split("-")[0])
 
-	name = tds[0].get_text()
+	name = tds[0].get_text().strip()
 	mins = tds[2].get_text()
 	fg = tds[3].get_text()
 	tre = tds[4].get_text()
