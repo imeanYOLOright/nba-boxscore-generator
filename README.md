@@ -1,6 +1,5 @@
-nba-boxscore
+nba-boxscore-generator
 ============
 
-NBA Box Score generator
-
-A simmple web scraper to generate box scores in Reddit-formatted table.
+Generate box scores in Reddit-formatted table.
+(Update of design by hvivian)
